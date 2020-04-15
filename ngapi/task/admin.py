@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from task.models import Movie
+
+
+@admin.register(Movie)
+class Movie(admin.ModelAdmin):
+    list_display = ['title', 'year', 'type', 'imdb_id', 'poster']
