@@ -16,11 +16,13 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
-from task.views import MovieListView
+from task.views import MovieListView, CommentListView
 
 urlpatterns = [
     url('admin/', admin.site.urls),
     url(r'^movie/$', MovieListView.as_view(), name='movie-list'),
+    url(r'^comment/$', CommentListView.as_view(), name='movie-list'),
+
     # url(r'^api/account/(?P<id>[0-9]+)/$', AccountView.as_view(), name='accountcount'),
     # url(r'^api/.*', WrongEndpointView.as_view(), name='wrong-endpoint'),
 ]
