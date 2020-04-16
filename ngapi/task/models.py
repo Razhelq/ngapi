@@ -12,6 +12,7 @@ class Movie(models.Model):
     def __str__(self):
         return f'{self.title}'
 
+
 class Comment(models.Model):
     movie = models.ForeignKey(Movie, models.DO_NOTHING)
     body = models.TextField()
@@ -19,3 +20,8 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'{self.movie} - {self.body}'
+
+
+# class Top(models.Model):
+#     movie = models.ForeignKey(Movie, models.DO_NOTHING)
+#     comment = models.ForeignKey(Comment, models.DO_NOTHING)

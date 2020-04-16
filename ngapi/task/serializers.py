@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from task.models import Movie, Comment
+from task.models import Movie, Comment, Top
 
 
 class MovieSerializer(serializers.ModelSerializer):
@@ -19,6 +19,10 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class TopSerializer(serializers.ModelSerializer):
-    movie_id = serializers.SlugRelatedField(slug_field='title', queryset=Movie.objects.all())
+    movie_id = serializers.SlugRelatedField(slug_field='id', queryset=Movie.objects.all())
     total_comments = serializers.IntegerField(write_only=True)
     rank = serializers.IntegerField(write_only=True)
+#
+    class Meta:
+        model = Comment
+        fields = ('movie__id', 'total_comments', 'rank')

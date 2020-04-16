@@ -8,9 +8,8 @@ from rest_framework import status
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django.conf import settings
 
-from task.models import Movie, Comment
-from task.serializers import MovieSerializer, CommentSerializer
-
+from task.models import Movie, Comment, Top
+from task.serializers import MovieSerializer, CommentSerializer, TopSerializer
 
 fmt = getattr(settings, 'LOG_FORMAT', None)
 lvl = getattr(settings, 'LOG_LEVEL', logging.DEBUG)
@@ -62,6 +61,7 @@ class CommentListView(ListAPIView):
     #     response = Response(serializer.data)
     #     return response
     #
+
     def post(self, request):
         serializer = CommentSerializer(data=request.data)
         if serializer.is_valid():
@@ -70,6 +70,36 @@ class CommentListView(ListAPIView):
             return response
         response = Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         return response
+
+
+class TopListView(ListAPIView):
+    queryset = Top.objects.all()
+    serializer_class = TopSerializer
+    filter_backends = [SearchFilter]
+    filter_fields = {
+        'comment__date': ['gte', 'lte']
+    }
+
+    def post(self, request):
+        data = self.count_top(request.data)
+        # serializer = CommentSerializer(data=request.data)
+        # if serializer.is_valid():
+        #     serializer.save()
+        #     response = Response(serializer.data, status=status.HTTP_201_CREATED)
+        #     return response
+        # response = Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # return response
+
+    @staticmethod
+    def count_top(data):
+        # movie_id = data['movie']
+        # data['title'] = movie_json['Title']
+        # data['year'] = movie_json['Year'][:4]
+        # data['imdb_id'] = movie_json['imdbID']
+        # data['type'] = movie_json['Type']
+        # data['poster'] = movie_json['Poster']
+        # return data
+
 
 
 # class ProductView(APIView):
