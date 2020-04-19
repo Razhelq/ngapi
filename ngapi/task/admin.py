@@ -10,4 +10,4 @@ class Movie(admin.ModelAdmin):
 
 @admin.register(Comment)
 class Comment(admin.ModelAdmin):
-    list_display = ['movie', 'body']
+    list_display = ['movie', 'body', 'date']

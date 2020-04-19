@@ -22,6 +22,6 @@ class Comment(models.Model):
         return f'{self.movie} - {self.body}'
 
 
-# class Top(models.Model):
-#     movie = models.ForeignKey(Movie, models.DO_NOTHING)
-#     comment = models.ForeignKey(Comment, models.DO_NOTHING)
+class Top(models.Model):
+    date_start = models.DateField(blank=True, null=True)
+    date_end = models.DateField(blank=True, null=True)

@@ -1,9 +1,8 @@
 from rest_framework import serializers
-from task.models import Movie, Comment, Top
+from task.models import Movie, Comment
 
 
 class MovieSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Movie
         fields = ('title', 'year', 'type', 'imdb_id', 'poster')
@@ -18,11 +17,12 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = ('movie', 'body', 'movie_id', 'date')
 
 
-class TopSerializer(serializers.ModelSerializer):
-    movie_id = serializers.SlugRelatedField(slug_field='id', queryset=Movie.objects.all())
-    total_comments = serializers.IntegerField(write_only=True)
-    rank = serializers.IntegerField(write_only=True)
-#
-    class Meta:
-        model = Comment
-        fields = ('movie__id', 'total_comments', 'rank')
+class TopSerializer(serializers.Serializer):
+    movie_id = serializers.IntegerField()
+    total_comments = serializers.IntegerField()
+    rank = serializers.IntegerField()
+
+
+class TopRangeSerializer(serializers.Serializer):
+    date_start = serializers.DateField()
+    date_end = serializers.DateField()
