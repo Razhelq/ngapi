@@ -37,7 +37,7 @@ class MovieListView(ListAPIView):
     @staticmethod
     def get_movie_details(data):
         movie_json = requests.get(f"https://omdbapi.com/?t={data['title']}&apikey=8e68ddd9").json()
-        data._mutable = True
+        # data._mutable = True
         data['title'] = movie_json['Title']
         data['year'] = movie_json['Year'][:4]
         data['imdb_id'] = movie_json['imdbID']
@@ -65,41 +65,23 @@ class CommentListView(ListAPIView):
 class TopListView(APIView):
 
     def get(self, request):
-        data = self.count_top()
-        serializer = TopSerializer(data=data, many=True)
-        if serializer.is_valid():
-            response = Response(serializer.data)
-            return response
-        response = Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        date_start = request.GET.get('date_start')
+        date_end = request.GET.get('date_end')
+        if date_start and date_end:
+            data = self.count_top(date_start, date_end)
+            serializer = TopSerializer(data=data, many=True)
+            if serializer.is_valid():
+                response = Response(serializer.data)
+                return response
+        response = Response("Time range is required", status=status.HTTP_400_BAD_REQUEST)
         return response
-
-
-    def post(self, request):
-        data = self.count_top(request.data)
-        serializer = TopSerializer(data=data, many=True)
-        if serializer.is_valid():
-            response = Response(serializer.data)
-            return response
-        response = Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        return response
-
 
     @staticmethod
-    def count_top(data=None):
+    def count_top(date_start, date_end):
         top = []
-        movies = Movie.objects.all()
-        if data:
-            if data['date_start']:
-                movies = movies.filter(comment__date__gte=data['date_start'])
-            if data['date_end']:
-                movies = movies.filter(comment__date__lte=data['date_end'])
+        movies = Movie.objects.filter(comment__date__gte=date_start).filter(comment__date__lte=date_end)
         for movie in movies.distinct():
-            comment = Comment.objects.filter(movie=movie)
-            if data:
-                if data['date_start']:
-                    comment = comment.filter(date__gte=data['date_start'])
-                if data['date_end']:
-                    comment = comment.filter(date__lte=data['date_end'])
+            comment = Comment.objects.filter(movie=movie).filter(date__gte=date_start).filter(date__lte=date_end)
             top.append({
                 'movie_id': movie.id,
                 'total_comments': len(comment),

@@ -21,8 +21,3 @@ class TopSerializer(serializers.Serializer):
     movie_id = serializers.IntegerField()
     total_comments = serializers.IntegerField()
     rank = serializers.IntegerField()
-
-
-class TopRangeSerializer(serializers.Serializer):
-    date_start = serializers.DateField()
-    date_end = serializers.DateField()
