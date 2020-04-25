@@ -7,9 +7,10 @@ from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.filters import SearchFilter, OrderingFilter
+from django_filters.rest_framework import DjangoFilterBackend
 from django.conf import settings
 
-from task.models import Movie, Comment, Top
+from task.models import Movie, Comment
 from task.serializers import MovieSerializer, CommentSerializer, TopSerializer
 
 
@@ -23,6 +24,10 @@ logging.debug("Logging started on %s for %s" % (logging.root.name, logging.getLe
 class MovieListView(ListAPIView):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_fields = ['title', 'year', 'type', 'imdb_id', 'poster']
+    search_fields = '__all__'
+    ordering_fields = '__all__'
 
     def post(self, request):
         data = self.get_movie_details(request.data)
@@ -73,7 +78,11 @@ class TopListView(APIView):
             if serializer.is_valid():
                 response = Response(serializer.data)
                 return response
-        response = Response("Time range is required", status=status.HTTP_400_BAD_REQUEST)
+        response = Response(
+            "Time range is required (date_start, date_end):    e.g. "
+            "/top/?date_start=2020-04-17T00:00:00.000Z&date_end=2020-04-19T00:00:00.000Z ",
+            status=status.HTTP_400_BAD_REQUEST
+        )
         return response
 
     @staticmethod
