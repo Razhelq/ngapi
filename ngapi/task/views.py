@@ -1,7 +1,7 @@
 import logging
 import requests
-from django.db.models import Count
 
+from django.db.models import Count
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
@@ -12,13 +12,6 @@ from django.conf import settings
 
 from task.models import Movie, Comment
 from task.serializers import MovieSerializer, CommentSerializer, TopSerializer
-
-
-fmt = getattr(settings, 'LOG_FORMAT', None)
-lvl = getattr(settings, 'LOG_LEVEL', logging.DEBUG)
-
-logging.basicConfig(format=fmt, level=lvl)
-logging.debug("Logging started on %s for %s" % (logging.root.name, logging.getLevelName(lvl)))
 
 
 class MovieListView(ListAPIView):
@@ -42,7 +35,6 @@ class MovieListView(ListAPIView):
     @staticmethod
     def get_movie_details(data):
         movie_json = requests.get(f"https://omdbapi.com/?t={data['title']}&apikey=8e68ddd9").json()
-        # data._mutable = True
         data['title'] = movie_json['Title']
         data['year'] = movie_json['Year'][:4]
         data['imdb_id'] = movie_json['imdbID']

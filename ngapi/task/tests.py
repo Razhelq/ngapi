@@ -82,4 +82,3 @@ class TopTests(APITestCase):
         self.assertEqual(json.loads(response.content)[0]['movie_id'], 2)
         self.assertEqual(json.loads(response.content)[3]['rank'], 3)
         self.assertEqual(len(response.data), 4)
-        # self.assertEqual(json.loads(response.content), 'body')

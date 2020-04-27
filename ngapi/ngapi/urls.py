@@ -23,7 +23,4 @@ urlpatterns = [
     url(r'^movie/$', MovieListView.as_view(), name='movie-list'),
     url(r'^comment/$', CommentListView.as_view(), name='comment-list'),
     url(r'^top/$', TopListView.as_view(), name='top-list')
-
-    # url(r'^api/account/(?P<id>[0-9]+)/$', AccountView.as_view(), name='accountcount'),
-    # url(r'^api/.*', WrongEndpointView.as_view(), name='wrong-endpoint'),
 ]

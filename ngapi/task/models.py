@@ -20,8 +20,3 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'{self.movie} - {self.body}'
-
-#
-# class Top(models.Model):
-#     date_start = models.DateField(blank=True, null=True)
-#     date_end = models.DateField(blank=True, null=True)
