@@ -65,22 +65,21 @@ class TopTests(APITestCase):
         self.client.post('/movie/', {'title': 'Thor'}, format='json')
         self.client.post('/movie/', {'title': 'Matrix'}, format='json')
         self.client.post('/movie/', {'title': 'Star Wars'}, format='json')
-        self.client.get(self.url, format='json')
-        self.url = reverse('comment-list')
-        self.data = {'movie_id': 1, 'body': 'LoremIpsum'}
-
+        self.client.post('/movie/', {'title': 'Red'}, format='json')
+        self.client.post('/comment/', {'movie_id': 1, 'body': 'LoremIpsum'}, format='json')
+        self.client.post('/comment/', {'movie_id': 1, 'body': 'LoremIpsum'}, format='json')
+        self.client.post('/comment/', {'movie_id': 2, 'body': 'LoremIpsum'}, format='json')
+        self.client.post('/comment/', {'movie_id': 2, 'body': 'LoremIpsum'}, format='json')
+        self.client.post('/comment/', {'movie_id': 2, 'body': 'LoremIpsum'}, format='json')
+        self.client.post('/comment/', {'movie_id': 2, 'body': 'LoremIpsum'}, format='json')
+        self.client.post('/comment/', {'movie_id': 4, 'body': 'LoremIpsum'}, format='json')
+        self.client.post('/comment/', {'movie_id': 3, 'body': 'LoremIpsum'}, format='json')
 
     def test_get_comment(self):
-        self.client.get('/top/?date_start=2020-04-17T00:00:00.000Z&date_end=2020-04-19T00:00:00.000Z', format='json')
-
-
-
+        response = self.client.get('/top/?date_start=2020-04-17T00:00:00.000Z&date_end=2021-04-19T00:00:00.000Z', format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertNotEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(len(response.data), 1)
-        self.assertEqual(json.loads(response.content)[0]['movie'], 'Thor')
-        self.assertEqual(json.loads(response.content)[0]['body'], self.data['body'])
-
-
-
-
+        self.assertEqual(json.loads(response.content)[0]['movie_id'], 2)
+        self.assertEqual(json.loads(response.content)[3]['rank'], 3)
+        self.assertEqual(len(response.data), 4)
+        # self.assertEqual(json.loads(response.content), 'body')
