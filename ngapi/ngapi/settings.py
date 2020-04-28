@@ -76,12 +76,16 @@ WSGI_APPLICATION = 'ngapi.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+DATABASES = {}
+DATABASES['default'] = dj_database_url.config(
+    default='postgres://sbzpokupvwjndp:285231b7a2f8c3d48014c56931d7b619cf2ee0b3182083c6b03e0ae0b5c4e829@ec2-54-228-250-82.eu-west-1.compute.amazonaws.com:5432/dau121fohch3a2'
+)
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
 
 
 # Password validation
