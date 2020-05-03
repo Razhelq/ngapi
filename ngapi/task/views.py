@@ -72,7 +72,7 @@ class TopListView(APIView):
                 return response
         response = Response(
             "Time range is required (date_start, date_end):    e.g. "
-            "/top/?date_start=2020-04-17T00:00:00.000Z&date_end=2020-04-19T00:00:00.000Z ",
+            "/top/?date_start=2020-04-17T00:00:00.000Z&date_end=2021-04-19T00:00:00.000Z",
             status=status.HTTP_400_BAD_REQUEST
         )
         return response
