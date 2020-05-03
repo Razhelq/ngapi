@@ -20,7 +20,7 @@ from task.views import MovieListView, CommentListView, TopListView
 
 urlpatterns = [
     url('admin/', admin.site.urls),
-    url(r'^movie/$', MovieListView.as_view(), name='movie-list'),
-    url(r'^comment/$', CommentListView.as_view(), name='comment-list'),
+    url(r'^movies/$', MovieListView.as_view(), name='movie-list'),
+    url(r'^comments/$', CommentListView.as_view(), name='comment-list'),
     url(r'^top/$', TopListView.as_view(), name='top-list')
 ]
